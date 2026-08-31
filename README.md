@@ -1,4 +1,4 @@
-# MUREC — Frontend Assignment
+# MUREC | Frontend Assignment
 
 A modern, immersive redesign of the MUREC homepage, built as part of a Frontend Developer assignment. The project uses MUREC's original content, branding, and media assets while drawing visual and interaction inspiration from the [Timeless](https://timeless.eu) website.
 
