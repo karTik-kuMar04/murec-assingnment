@@ -19,7 +19,7 @@ export function AssociationsSection() {
   const rowB = [...associations.logos.slice().reverse(), ...associations.logos.slice().reverse()];
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    if (!sectionRef.current || reducedMotion) return;
 
     gsap.from(sectionRef.current.querySelectorAll("[data-assoc-reveal]"), {
       y: 40,
@@ -32,7 +32,7 @@ export function AssociationsSection() {
         start: "top 80%",
       },
     });
-  }, []);
+  }, [reducedMotion]);
 
   useEffect(() => {
     if (reducedMotion || !rowARef.current || !rowBRef.current) return;

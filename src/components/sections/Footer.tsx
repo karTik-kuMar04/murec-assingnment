@@ -127,8 +127,19 @@ export function Footer() {
 
         {/* Bottom Copyright */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-t border-cream/[0.06] py-8 font-sans text-[10px] tracking-[0.2em] text-cream/40 uppercase">
-          <p>{footer.copyright}</p>
-          <button 
+          <div className="flex flex-col items-center gap-2 md:items-start">
+            <p>{footer.copyright}</p>
+            <a
+              href={footer.poweredBy.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="normal-case tracking-normal text-cream/30 transition-colors hover:text-accent"
+            >
+              {footer.poweredBy.label}
+            </a>
+          </div>
+          <button
+            type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="hover:text-accent transition-colors"
           >

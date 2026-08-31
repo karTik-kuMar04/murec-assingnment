@@ -9,7 +9,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://murec.com"),
+  metadataBase: new URL("https://murec-assingnment.vercel.app"),
   title: "MUREC — Madhusudan Urban Real Estate Collection",
   description:
     "For over seven decades, MUREC has stood for perseverance, integrity, and nation-building through enterprise. Quality before profit, trust before everything.",

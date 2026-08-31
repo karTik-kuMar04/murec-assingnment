@@ -5,7 +5,6 @@ import { ChevronDown } from "lucide-react";
 import { gsap, registerGsap } from "@/lib/gsap";
 import { hero } from "@/data/murec";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 registerGsap();
@@ -24,7 +23,6 @@ type HeroProps = {
 
 export function Hero({ ready }: HeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -121,7 +119,6 @@ export function Hero({ ready }: HeroProps) {
       {/* Full-bleed Video Canvas */}
       <div ref={mediaRef} className="absolute inset-0 h-full w-full">
         <video
-          ref={videoRef}
           className="h-full w-full object-cover object-center"
           src={hero.video}
           poster={hero.poster}
@@ -129,14 +126,11 @@ export function Hero({ ready }: HeroProps) {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
         />
         <div ref={overlayRef} className="cinematic-vignette absolute inset-0 pointer-events-none" />
         <div className="grain absolute inset-0 opacity-25 pointer-events-none" aria-hidden />
       </div>
-
-      {/* Floating Audio Control (Top Right below navbar) */}
-
 
       {/* Hero Content Overlay */}
       <div className="relative z-10 flex h-full flex-col justify-between px-[var(--grid-margin)] pb-10 pt-28 md:pb-12 md:pt-36">

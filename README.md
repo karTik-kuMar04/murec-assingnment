@@ -1,6 +1,6 @@
 # MUREC | Frontend Assignment
 
-A modern, immersive redesign of the MUREC homepage, built as part of a Frontend Developer assignment. The project uses MUREC's original content, branding, and media assets while drawing visual and interaction inspiration from the [Timeless](https://timeless.eu) website.
+A modern, immersive redesign of the MUREC homepage, built as part of a Frontend Developer assignment. The project uses MUREC's original content, branding, and media assets while drawing visual and interaction inspiration from the [Timeless](https://timeless.club/en) website.
 
 ---
 
@@ -91,7 +91,7 @@ src/
 
 ## Design Inspiration
 
-The visual language of this project is inspired by the immersive, cinematic, and editorial qualities of the [Timeless](https://timeless.eu) website — in particular its use of dark architectural tones, large-scale display typography, and scroll-driven storytelling. The layout, component architecture, and implementation are entirely original and built specifically around MUREC's brand and content.
+The visual language of this project is inspired by the immersive, cinematic, and editorial qualities of the [Timeless](https://timeless.club/en) website — in particular its use of dark architectural tones, large-scale display typography, and scroll-driven storytelling. The layout, component architecture, and implementation are entirely original and built specifically around MUREC's brand and content.
 
 ---
 
@@ -110,3 +110,17 @@ All content — including copy, imagery, logos, and video assets — is sourced 
 ## Submission
 
 This project was created as part of the **Frontend Developer assignment** for Propacity. It demonstrates modern frontend engineering practices including motion design, scroll-driven UX, and responsive component architecture using the Next.js + GSAP + Lenis stack.
+
+### Zip checklist
+
+When creating your submission zip, include the project **without** `node_modules` and `.next`:
+
+```bash
+zip -r murec-assignment.zip . -x "node_modules/*" -x ".next/*" -x ".git/*"
+```
+
+After the latest fixes, redeploy to Vercel so the live demo matches the submitted code:
+
+```bash
+npm run build && vercel --prod
+```
