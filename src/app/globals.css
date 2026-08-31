@@ -1,26 +1,192 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Gotu";
+  src: url("/fonts/Gotu-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ivory: #f7f3ec;
+  --stone: #e8e2d8;
+  --charcoal: #141210;
+  --taupe: #6b645c;
+  --bronze: #9a7b5a;
+  --cream: var(--ivory);
+  --warm-gray: var(--stone);
+  --muted: var(--taupe);
+  --accent: var(--bronze);
+  --background: var(--ivory);
+  --foreground: var(--charcoal);
+  --grid-margin: clamp(1.25rem, 4vw, 4rem);
+  --type-display-xl: clamp(4rem, 13vw, 12rem);
+  --type-display: clamp(3rem, 10vw, 9rem);
+  --type-display-sm: clamp(2.25rem, 7vw, 5.5rem);
+  --type-heading: clamp(1.75rem, 4vw, 3rem);
+  --type-body: clamp(0.9375rem, 1.05vw, 1.0625rem);
+  --type-small: clamp(0.8125rem, 0.95vw, 0.9375rem);
+  --type-micro: 0.625rem;
+  --tracking-meta: 0.14em;
+  --tracking-label: 0.2em;
+  --leading-display: 0.9;
+  --leading-body: 1.65;
 }
 
 @theme inline {
+  --color-ivory: var(--ivory);
+  --color-stone: var(--stone);
+  --color-cream: var(--cream);
+  --color-charcoal: var(--charcoal);
+  --color-warm-gray: var(--warm-gray);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-bronze: var(--bronze);
+  --color-taupe: var(--taupe);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: "Gotu", var(--font-geist-sans), serif;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+  letter-spacing: normal;
+  word-spacing: normal;
+  overflow-x: hidden;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.text-display-xl {
+  font-size: var(--type-display-xl);
+  line-height: var(--leading-display);
+}
+
+.text-display {
+  font-size: var(--type-display);
+  line-height: var(--leading-display);
+}
+
+.text-display-sm {
+  font-size: var(--type-display-sm);
+  line-height: 0.92;
+}
+
+.text-heading {
+  font-size: var(--type-heading);
+  line-height: 1.15;
+}
+
+.text-body {
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+  letter-spacing: normal;
+}
+
+.text-small {
+  font-size: var(--type-small);
+  line-height: 1.5;
+  letter-spacing: normal;
+}
+
+.text-meta {
+  font-size: var(--type-micro);
+  letter-spacing: var(--tracking-meta);
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.text-label {
+  font-size: var(--type-micro);
+  letter-spacing: var(--tracking-label);
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.text-label-normal {
+  font-size: var(--type-micro);
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-transform: uppercase;
+}
+
+.editorial-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(1rem, 2vw, 2rem);
+  padding-inline: var(--grid-margin);
+}
+
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .link-underline::after {
+  transform: scaleX(1);
+}
+
+.section-pinned {
+  overflow: hidden;
+}
+
+@keyframes bounce-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-bounce-slow {
+    animation: none;
+  }
 }
