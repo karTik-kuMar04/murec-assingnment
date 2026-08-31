@@ -8,12 +8,11 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 registerGsap();
 
-registerGsap();
-
 export function AssociationsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const rowARef = useRef<HTMLDivElement>(null);
   const rowBRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
   const reducedMotion = useReducedMotion();
 
   const rowA = [...associations.logos, ...associations.logos];
@@ -23,10 +22,11 @@ export function AssociationsSection() {
     if (!sectionRef.current) return;
 
     gsap.from(sectionRef.current.querySelectorAll("[data-assoc-reveal]"), {
-      y: 50,
+      y: 40,
       opacity: 0,
       duration: 1.1,
-      stagger: 0.08,
+      stagger: 0.1,
+      ease: "power3.out",
       scrollTrigger: {
         trigger: sectionRef.current,
         start: "top 80%",
@@ -40,23 +40,23 @@ export function AssociationsSection() {
     const tweenA = gsap.to(rowARef.current, {
       xPercent: -50,
       ease: "none",
-      duration: 50,
+      duration: 45,
       repeat: -1,
     });
 
     const tweenB = gsap.to(rowBRef.current, {
       xPercent: -50,
       ease: "none",
-      duration: 65,
+      duration: 55,
       repeat: -1,
     });
 
     const container = sectionRef.current;
     const slow = () => {
-      gsap.to([tweenA, tweenB], { timeScale: 0.25, duration: 0.6 });
+      gsap.to([tweenA, tweenB], { timeScale: 0.2, duration: 0.8 });
     };
     const normal = () => {
-      gsap.to([tweenA, tweenB], { timeScale: 1, duration: 0.6 });
+      gsap.to([tweenA, tweenB], { timeScale: 1, duration: 0.8 });
     };
 
     container?.addEventListener("mouseenter", slow);
@@ -74,30 +74,43 @@ export function AssociationsSection() {
     <section
       ref={sectionRef}
       id="associations"
-      className="overflow-hidden bg-charcoal py-28 text-cream md:py-36"
+      className="relative overflow-hidden bg-[#0d0d0c] py-32 text-cream md:py-40"
     >
-      <div className="mb-20 px-[var(--grid-margin)]">
-        <SectionMeta index="05" label="Associations" light className="mb-10" />
-        <h2 data-assoc-reveal className="font-display text-display-sm text-cream">
+      {/* Background grain */}
+      <div className="grain absolute inset-0 opacity-20 pointer-events-none" />
+
+      {/* Header Info */}
+      <div className="mb-24 px-[var(--grid-margin)]">
+        <SectionMeta index="05" label="Associations" className="mb-10" />
+        <h2
+          ref={titleRef}
+          data-assoc-reveal
+          className="font-display text-[clamp(3.5rem,9vw,7.5rem)] leading-[0.9] text-cream"
+        >
           {associations.title[0]}
           <br />
-          <span className="text-cream/30">{associations.title[1]}</span>
+          <span className="text-cream/25">{associations.title[1]}</span>
         </h2>
       </div>
 
-      <div className="space-y-10" aria-label="Association logos">
+      {/* Marquee Tracks with Cinematic Gradient Edges */}
+      <div className="space-y-12" aria-label="Association partners">
         <div className="relative overflow-hidden">
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-charcoal to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-charcoal to-transparent" />
-          <div ref={rowARef} className="flex w-max gap-20 md:gap-28">
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-32 bg-gradient-to-r from-[#0d0d0c] via-[#0d0d0c]/80 to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-[#0d0d0c] via-[#0d0d0c]/80 to-transparent" />
+
+          <div ref={rowARef} className="flex w-max gap-24 md:gap-36">
             {rowA.map((logo, i) => (
               <LogoItem key={`a-${logo.src}-${i}`} logo={logo} index={i} />
             ))}
           </div>
         </div>
 
-        <div className="relative overflow-hidden opacity-60">
-          <div ref={rowBRef} className="flex w-max gap-20 md:gap-28">
+        <div className="relative overflow-hidden opacity-50">
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-32 bg-gradient-to-r from-[#0d0d0c] via-[#0d0d0c]/80 to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-[#0d0d0c] via-[#0d0d0c]/80 to-transparent" />
+
+          <div ref={rowBRef} className="flex w-max gap-24 md:gap-36">
             {rowB.map((logo, i) => (
               <LogoItem key={`b-${logo.src}-${i}`} logo={logo} index={i} small />
             ))}
@@ -119,21 +132,23 @@ function LogoItem({
 }) {
   return (
     <div
-      className={`group flex shrink-0 flex-col items-center gap-3 ${small ? "w-32 md:w-36" : "w-40 md:w-48"}`}
+      className={`group flex shrink-0 flex-col items-center gap-3 transition-opacity ${
+        small ? "w-36 md:w-44" : "w-44 md:w-56"
+      }`}
     >
-      <span className="font-sans text-[9px] tracking-[0.35em] text-cream/25">
+      <span className="font-mono text-[9px] tracking-[0.3em] text-accent/60">
         {String((index % 6) + 1).padStart(2, "0")}
       </span>
       <div
-        className={`flex w-full items-center justify-center transition-transform duration-500 group-hover:scale-110 ${
-          small ? "h-14 md:h-16" : "h-20 md:h-24"
+        className={`flex w-full items-center justify-center rounded-sm border border-cream/[0.06] bg-charcoal/40 p-4 transition-all duration-500 group-hover:scale-105 group-hover:border-cream/20 ${
+          small ? "h-16 md:h-20" : "h-24 md:h-28"
         }`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={logo.src}
           alt={logo.alt}
-          className="max-h-full max-w-full object-contain brightness-0 invert opacity-60 transition-opacity duration-300 group-hover:opacity-100"
+          className="max-h-full max-w-full object-contain brightness-0 invert opacity-60 transition-all duration-300 group-hover:opacity-100"
           loading="lazy"
         />
       </div>

@@ -31,8 +31,9 @@ export function PrinciplesSection() {
     const track = trackRef.current;
 
     const ctx = gsap.context(() => {
+      // Main horizontal pin & track
       createHorizontalScroll(section, track, {
-        scrub: 1,
+        scrub: 1.2,
         onUpdate: (self) => {
           const index = Math.min(
             PANELS,
@@ -42,13 +43,49 @@ export function PrinciplesSection() {
         },
       });
 
+      // Layered horizontal velocity parallax for text & media
+      const getDist = () => Math.max(0, track.scrollWidth - window.innerWidth);
+
       gsap.to(track.querySelector("[data-principle-media]"), {
+        x: -180,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => `+=${getDist()}`,
+          scrub: true,
+        },
+      });
+
+      gsap.to(track.querySelector("[data-principle-word-1]"), {
+        x: -80,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => `+=${getDist()}`,
+          scrub: true,
+        },
+      });
+
+      gsap.to(track.querySelector("[data-principle-word-2]"), {
         x: 60,
         ease: "none",
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: () => `+=${Math.max(0, track.scrollWidth - window.innerWidth)}`,
+          end: () => `+=${getDist()}`,
+          scrub: true,
+        },
+      });
+
+      gsap.to(track.querySelector("[data-principle-copy]"), {
+        x: -60,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => `+=${getDist()}`,
           scrub: true,
         },
       });
@@ -68,30 +105,51 @@ export function PrinciplesSection() {
     <section
       ref={sectionRef}
       id="principles"
-      className="section-pinned relative bg-charcoal text-cream"
+      className="section-pinned relative bg-[#080808] text-cream"
     >
+      {/* Background grain */}
+      <div className="grain absolute inset-0 opacity-20 pointer-events-none" />
+
+      {/* Scoped Horizontal Progress Bar */}
       {isDesktop && !reducedMotion && (
-        <HorizontalProgress current={panel} total={PANELS} label="Principles" variant="light" />
+        <HorizontalProgress current={panel} total={PANELS} label="Principles" />
       )}
 
+      {/* Desktop Horizontal Track */}
       <div
         ref={trackRef}
-        className="hidden h-[100svh] min-h-[600px] w-max items-stretch md:flex"
+        className="hidden h-[100svh] min-h-[640px] w-max items-stretch md:flex"
       >
+        {/* Panel 1: Intro & LIVING */}
         <div className="flex h-full w-screen shrink-0 flex-col justify-center px-[var(--grid-margin)]">
-          <SectionMeta index="02" label="Principles" light className="mb-10" />
-          <h2 className="font-display text-display text-cream">{principles.title[0]}</h2>
+          <SectionMeta index="02" label="Principles" className="mb-10" />
+          <h2
+            data-principle-word-1
+            className="font-display text-[clamp(4.5rem,13vw,11rem)] leading-none text-cream"
+          >
+            {principles.title[0]}
+          </h2>
         </div>
 
-        <div className="flex h-full w-[80vw] shrink-0 items-center px-[var(--grid-margin)] md:w-screen">
-          <h2 className="font-display text-display text-cream/15">{principles.title[1]}</h2>
+        {/* Panel 2: BY */}
+        <div className="flex h-full w-[70vw] shrink-0 items-center px-[var(--grid-margin)]">
+          <h2
+            data-principle-word-2
+            className="font-display text-[clamp(4.5rem,13vw,11rem)] leading-none text-cream/20"
+          >
+            {principles.title[1]}
+          </h2>
         </div>
 
+        {/* Panel 3: PRINCIPLES with Architectural Video behind */}
         <div className="relative flex h-full w-screen shrink-0 items-center overflow-hidden px-[var(--grid-margin)]">
-          <h2 className="relative z-10 font-display text-display text-accent">{principles.title[2]}</h2>
+          <h2 className="relative z-10 font-display text-[clamp(4.5rem,13vw,11rem)] leading-none text-accent">
+            {principles.title[2]}
+          </h2>
+
           <div
             data-principle-media
-            className="absolute right-[var(--grid-margin)] aspect-[3/4] w-[min(34vw,380px)] overflow-hidden opacity-35"
+            className="absolute right-[var(--grid-margin)] aspect-[3/4] w-[min(38vw,440px)] overflow-hidden border border-cream/10 bg-charcoal shadow-2xl opacity-60"
           >
             <video
               ref={videoRef}
@@ -103,22 +161,41 @@ export function PrinciplesSection() {
               playsInline
               preload="none"
             />
+            <div className="absolute inset-0 bg-charcoal/40 pointer-events-none" />
           </div>
         </div>
 
-        <div className="flex h-full w-[90vw] shrink-0 items-center px-[var(--grid-margin)] md:w-screen">
-          <p className="max-w-md text-body text-cream/65">{principles.copy}</p>
+        {/* Panel 4: Narrative Copy */}
+        <div
+          data-principle-copy
+          className="flex h-full w-[85vw] shrink-0 items-center px-[var(--grid-margin)]"
+        >
+          <div className="max-w-lg border-l border-cream/20 pl-8">
+            <p className="font-sans text-lg leading-relaxed text-cream/70 md:text-xl">
+              {principles.copy}
+            </p>
+          </div>
         </div>
 
+        {/* Panel 5: Call to Action */}
         <div className="flex h-full w-screen shrink-0 flex-col justify-center px-[var(--grid-margin)]">
-          <ArrowLink href={principles.cta.href} label={principles.cta.label} />
+          <div className="max-w-md">
+            <p className="text-meta text-accent mb-4">OUR COMMITMENT</p>
+            <h3 className="font-display text-4xl text-cream mb-8">
+              Explore Our Core Principles
+            </h3>
+            <ArrowLink href={principles.cta.href} label={principles.cta.label} />
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-col gap-10 px-[var(--grid-margin)] py-20 md:hidden">
-        <SectionMeta index="02" label="Principles" light />
-        <h2 className="font-display text-heading text-cream">{principles.title.join(" ")}</h2>
-        <div className="aspect-[16/10] overflow-hidden">
+      {/* Mobile Vertical Layout */}
+      <div className="flex flex-col gap-12 px-[var(--grid-margin)] py-24 md:hidden">
+        <SectionMeta index="02" label="Principles" />
+        <h2 className="font-display text-5xl leading-tight text-cream">
+          {principles.title.join(" ")}
+        </h2>
+        <div className="aspect-[16/10] overflow-hidden border border-cream/10 bg-charcoal">
           <video
             className="h-full w-full object-cover"
             src={principles.video}
@@ -129,7 +206,9 @@ export function PrinciplesSection() {
             preload="none"
           />
         </div>
-        <p className="text-body text-cream/65">{principles.copy}</p>
+        <p className="font-sans text-base leading-relaxed text-cream/70">
+          {principles.copy}
+        </p>
         <ArrowLink href={principles.cta.href} label={principles.cta.label} />
       </div>
     </section>

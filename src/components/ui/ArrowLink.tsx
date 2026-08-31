@@ -5,25 +5,24 @@ type ArrowLinkProps = {
   href: string;
   label: string;
   className?: string;
-  dark?: boolean;
 };
 
-export function ArrowLink({ href, label, className = "", dark = false }: ArrowLinkProps) {
+export function ArrowLink({ href, label, className = "" }: ArrowLinkProps) {
   const isExternal = href.startsWith("http");
 
   const content = (
     <>
-      <span className="link-underline">{label}</span>
-      <ArrowRight
-        className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1.5"
-        aria-hidden
-      />
+      <span className="link-underline font-sans text-xs tracking-[0.2em] uppercase">{label}</span>
+      <span className="flex h-7 w-7 items-center justify-center rounded-full border border-cream/20 transition-all duration-300 group-hover:border-accent group-hover:scale-110">
+        <ArrowRight
+          className="h-3.5 w-3.5 text-cream/75 transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-accent"
+          aria-hidden
+        />
+      </span>
     </>
   );
 
-  const classes = `group inline-flex min-h-[44px] items-center gap-3 text-label transition-colors duration-300 ${
-    dark ? "text-charcoal hover:text-accent" : "text-cream hover:text-accent"
-  } ${className}`;
+  const classes = `group inline-flex min-h-[44px] items-center gap-3.5 text-cream transition-colors duration-300 hover:text-accent ${className}`;
 
   if (isExternal) {
     return (

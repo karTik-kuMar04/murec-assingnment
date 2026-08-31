@@ -14,7 +14,6 @@ type MagneticButtonProps = {
 export function MagneticButton({
   href,
   label,
-  variant = "light",
   className = "",
 }: MagneticButtonProps) {
   const ref = useRef<HTMLAnchorElement>(null);
@@ -26,28 +25,28 @@ export function MagneticButton({
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) * 0.12;
-    const y = (e.clientY - rect.top - rect.height / 2) * 0.12;
+    const x = (e.clientX - rect.left - rect.width / 2) * 0.15;
+    const y = (e.clientY - rect.top - rect.height / 2) * 0.15;
     setOffset({ x, y });
   };
 
   const handleLeave = () => setOffset({ x: 0, y: 0 });
 
-  const classes = `group inline-flex min-h-[44px] items-center gap-3 rounded-full border px-6 py-3 text-label transition-all duration-500 ${
-    variant === "light"
-      ? "border-cream/25 text-cream hover:border-cream/60 hover:bg-cream/5"
-      : "border-charcoal/15 text-charcoal hover:border-charcoal hover:bg-charcoal/5"
-  } ${className}`;
+  const classes = `group inline-flex min-h-[48px] items-center gap-4 rounded-full border border-cream/20 bg-charcoal/40 px-7 py-3 text-label text-cream backdrop-blur-sm transition-all duration-300 hover:border-accent hover:bg-accent/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cream ${className}`;
 
   const style = { transform: `translate(${offset.x}px, ${offset.y}px)` };
 
   const content = (
     <>
-      <span>{label}</span>
-      <ArrowRight
-        className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
-        aria-hidden
-      />
+      <span className="font-sans text-xs tracking-[0.22em] text-cream/90 uppercase transition-colors group-hover:text-cream">
+        {label}
+      </span>
+      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-cream/10 transition-all duration-300 group-hover:bg-accent group-hover:text-charcoal">
+        <ArrowRight
+          className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
+          aria-hidden
+        />
+      </span>
     </>
   );
 

@@ -10,12 +10,13 @@ import { useVideoInView } from "@/hooks/useVideoInView";
 
 registerGsap();
 
-const TITLE_LINES = ["THE", "LEGACY", "BEYOND", "COMPARE"] as const;
-
 export function LegacySection() {
   const sectionRef = useRef<HTMLElement>(null);
   const statRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
+  const word1Ref = useRef<HTMLSpanElement>(null);
+  const word2Ref = useRef<HTMLSpanElement>(null);
+  const word3Ref = useRef<HTMLSpanElement>(null);
+  const word4Ref = useRef<HTMLSpanElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
   const videoRef = useVideoInView<HTMLVideoElement>();
@@ -25,6 +26,7 @@ export function LegacySection() {
     if (reducedMotion || !sectionRef.current) return;
 
     const ctx = gsap.context(() => {
+      // Counter animation for 78+
       if (statRef.current) {
         const statEl = statRef.current;
         const targetValue = parseInt(legacy.stat, 10) || 78;
@@ -32,8 +34,8 @@ export function LegacySection() {
 
         gsap.to(counter, {
           value: targetValue,
-          duration: 2.2,
-          ease: "power2.out",
+          duration: 2.5,
+          ease: "power3.out",
           scrollTrigger: { trigger: statEl, start: "top 85%" },
           onUpdate: () => {
             if (!statEl.isConnected) return;
@@ -44,62 +46,103 @@ export function LegacySection() {
           },
         });
 
-        gsap.to(statRef.current, {
-          x: 80,
+        // Parallax depth for background 78+ number
+        gsap.to(statEl, {
+          y: -120,
+          x: 40,
           ease: "none",
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top bottom",
             end: "bottom top",
-            scrub: true,
+            scrub: 1.5,
           },
         });
       }
 
-      gsap.from(titleRef.current!.querySelectorAll("[data-line]"), {
-        x: -80,
-        opacity: 0,
-        duration: 1.1,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: titleRef.current, start: "top 80%" },
-      });
+      // Layered distinct typography entrance
+      if (word1Ref.current) {
+        gsap.from(word1Ref.current, {
+          x: -120,
+          opacity: 0,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: { trigger: word1Ref.current, start: "top 85%" },
+        });
+      }
 
-      gsap.from(mediaRef.current, {
-        clipPath: "inset(100% 0% 0% 0%)",
-        duration: 1.5,
-        ease: "power4.inOut",
-        scrollTrigger: { trigger: mediaRef.current, start: "top 82%" },
-      });
+      if (word2Ref.current) {
+        gsap.from(word2Ref.current, {
+          x: 100,
+          opacity: 0,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: { trigger: word2Ref.current, start: "top 85%" },
+        });
+      }
 
-      gsap.to(mediaRef.current!.querySelector("video"), {
-        y: -60,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
+      if (word3Ref.current) {
+        gsap.fromTo(
+          word3Ref.current,
+          { clipPath: "inset(100% 0% 0% 0%)", y: 40, opacity: 0 },
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
+            y: 0,
+            opacity: 1,
+            duration: 1.3,
+            ease: "power4.out",
+            scrollTrigger: { trigger: word3Ref.current, start: "top 85%" },
+          },
+        );
+      }
 
-      gsap.to(titleRef.current, {
-        x: -100,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "center center",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
+      if (word4Ref.current) {
+        gsap.from(word4Ref.current, {
+          y: 60,
+          opacity: 0,
+          duration: 1.4,
+          ease: "power2.out",
+          scrollTrigger: { trigger: word4Ref.current, start: "top 85%" },
+        });
+      }
 
-      gsap.from(copyRef.current, {
-        y: 40,
-        opacity: 0,
-        duration: 1,
-        scrollTrigger: { trigger: copyRef.current, start: "top 88%" },
-      });
+      // Media reveal with clip-path
+      if (mediaRef.current) {
+        gsap.from(mediaRef.current, {
+          clipPath: "inset(100% 0% 0% 0%)",
+          duration: 1.6,
+          ease: "power4.inOut",
+          scrollTrigger: { trigger: mediaRef.current, start: "top 80%" },
+        });
+
+        // Parallax image within container
+        const video = mediaRef.current.querySelector("video");
+        if (video) {
+          gsap.to(video, {
+            y: -70,
+            scale: 1.05,
+            ease: "none",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          });
+        }
+      }
+
+      // Copy text reveal
+      if (copyRef.current) {
+        gsap.from(copyRef.current.children, {
+          y: 30,
+          opacity: 0,
+          duration: 1,
+          stagger: 0.15,
+          ease: "power3.out",
+          scrollTrigger: { trigger: copyRef.current, start: "top 88%" },
+        });
+      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -109,42 +152,61 @@ export function LegacySection() {
     <section
       ref={sectionRef}
       id="legacy"
-      className="relative min-h-[100svh] bg-ivory py-24 md:py-32"
+      className="relative min-h-[100svh] overflow-hidden bg-[#0b0b0a] py-28 text-cream md:py-36"
     >
-      <div className="px-[var(--grid-margin)]">
+      {/* Background ambient lighting and noise */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_40%,rgba(197,168,128,0.04),transparent_60%)]" />
+      <div className="grain absolute inset-0 opacity-20 pointer-events-none" />
+
+      {/* Floating 78+ Year Legacy Stat in Depth */}
+      <div
+        ref={statRef}
+        className="pointer-events-none absolute top-12 -left-6 z-0 select-none font-display text-[clamp(9rem,26vw,24rem)] font-light leading-none text-cream/[0.03] md:-left-12 lg:-left-16"
+        aria-hidden="true"
+      >
+        {legacy.stat}
+      </div>
+
+      <div className="relative z-10 px-[var(--grid-margin)]">
         <SectionMeta index="01" label="Legacy" location="Noida / India" className="mb-16 md:mb-24" />
 
-        <div className="relative grid min-h-[70vh] gap-12 lg:grid-cols-12 lg:gap-0">
-          <div
-            ref={statRef}
-            className="pointer-events-none absolute -left-4 top-0 z-0 font-display text-[clamp(8rem,22vw,20rem)] leading-none text-charcoal/6 md:-left-12 lg:-left-20"
-            aria-hidden="true"
-          >
-            {legacy.stat}
-          </div>
-
-          <div ref={titleRef} className="relative z-10 lg:col-span-6 lg:pt-20">
-            <h2 className="font-display text-display-sm text-charcoal">
-              {TITLE_LINES.map((line) => (
-                <span key={line} data-line className="block">
-                  {line === "COMPARE" ? (
-                    <span className="text-accent">{line}</span>
-                  ) : (
-                    line
-                  )}
-                </span>
-              ))}
+        <div className="grid gap-16 lg:grid-cols-12 lg:gap-12">
+          {/* Left Column: Asymmetrical Display Typography */}
+          <div className="lg:col-span-6 lg:pt-10">
+            <h2 className="font-display text-[clamp(2.75rem,7.5vw,5.75rem)] leading-[0.92] text-cream">
+              <span ref={word1Ref} className="block transform-gpu">
+                THE
+              </span>
+              <span ref={word2Ref} className="block transform-gpu text-cream/70">
+                LEGACY
+              </span>
+              <span ref={word3Ref} className="block transform-gpu">
+                BEYOND
+              </span>
+              <span ref={word4Ref} className="block transform-gpu text-accent">
+                COMPARE
+              </span>
             </h2>
+
+            <div className="mt-12 hidden lg:block max-w-xs border-l border-accent/40 pl-6">
+              <p className="font-sans text-[11px] tracking-[0.2em] text-cream/40 uppercase">
+                {legacy.statLabel}
+              </p>
+              <p className="font-display text-2xl text-cream/90 mt-1">
+                Preserving Heritage Across Generations
+              </p>
+            </div>
           </div>
 
-          <div className="relative z-10 lg:col-span-5 lg:col-start-8">
+          {/* Right Column: Architectural Media & Narrative */}
+          <div className="lg:col-span-6 flex flex-col justify-between">
             <div
               ref={mediaRef}
-              className="mb-10 aspect-[3/4] overflow-hidden md:aspect-[4/5]"
+              className="relative mb-12 aspect-[4/5] w-full max-w-lg overflow-hidden border border-cream/10 bg-charcoal/50 shadow-2xl lg:ml-auto"
             >
               <video
                 ref={videoRef}
-                className="h-[115%] w-full object-cover object-center"
+                className="h-[120%] w-full object-cover object-center"
                 src={legacy.video}
                 poster={legacy.image}
                 muted
@@ -152,11 +214,17 @@ export function LegacySection() {
                 playsInline
                 preload="none"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute bottom-4 left-4 text-meta text-cream/60">
+                ARCHIVE · MADHUSUDAN
+              </div>
             </div>
 
-            <div ref={copyRef} className="max-w-sm lg:ml-auto">
-              <p className="mb-8 text-body text-muted">{legacy.copy}</p>
-              <ArrowLink href={legacy.cta.href} label={legacy.cta.label} dark />
+            <div ref={copyRef} className="max-w-md lg:ml-auto">
+              <p className="mb-8 font-sans text-base leading-relaxed text-cream/70 md:text-lg">
+                {legacy.copy}
+              </p>
+              <ArrowLink href={legacy.cta.href} label={legacy.cta.label} />
             </div>
           </div>
         </div>

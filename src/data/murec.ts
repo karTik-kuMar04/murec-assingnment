@@ -32,7 +32,7 @@ export const legacy = {
 export const principles = {
   index: "01",
   title: ["LIVING", "BY", "PRINCIPLES"],
-  copy: "MUREC is guided by values that shape every decision—building trust, delivering quality, practicing transparency, and embracing innovation as the foundation of everything we create.",
+  copy: "MUREC is guided by values that shape every decision: building trust, delivering quality, practicing transparency, and embracing innovation as the foundation of everything we create.",
   cta: { label: "Explore More", href: "https://murec.com/principles.php" },
   video: "/images/v2.mp4",
   image: "/images/murec.webp",

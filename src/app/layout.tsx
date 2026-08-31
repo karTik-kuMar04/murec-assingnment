@@ -23,8 +23,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} h-full antialiased`}>
-      <body className="min-h-full bg-cream text-charcoal">
+    <html lang="en" className={`${geistSans.variable} h-full antialiased dark`}>
+      <body className="min-h-full bg-charcoal text-cream selection:bg-accent/30 selection:text-cream">
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>
