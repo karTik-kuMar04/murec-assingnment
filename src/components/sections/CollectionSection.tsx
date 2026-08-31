@@ -30,7 +30,8 @@ export function CollectionSection() {
       // Surprise Moment: Aperture expanding from 60vw framed view to 100vw/100vh full-bleed
       gsap.set(mediaContainerRef.current, {
         clipPath: "inset(14% 16% 14% 16%)",
-        scale: 0.88,
+        transformOrigin: "center center",
+        willChange: "clip-path"
       });
       gsap.set(overlayRef.current, { opacity: 0.3 });
       gsap.set(titleRef.current!.querySelectorAll("[data-col-title]"), {
@@ -45,7 +46,7 @@ export function CollectionSection() {
           start: "top top",
           end: "+=160%",
           pin: true,
-          scrub: 1.2,
+          scrub: true,
           anticipatePin: 1,
         },
       });
@@ -55,9 +56,8 @@ export function CollectionSection() {
         mediaContainerRef.current,
         {
           clipPath: "inset(0% 0% 0% 0%)",
-          scale: 1,
           duration: 1.2,
-          ease: "power2.inOut",
+          ease: "none",
         },
         0,
       )
@@ -135,7 +135,7 @@ export function CollectionSection() {
         {/* Full-bleed Video with Expanding Aperture */}
         <div
           ref={mediaContainerRef}
-          className="absolute inset-0 h-full w-full overflow-hidden"
+          className="absolute inset-0 h-full w-full overflow-hidden transform-gpu"
         >
           <video
             ref={videoRef}

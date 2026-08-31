@@ -17,10 +17,16 @@ export function LegacySection() {
   const word2Ref = useRef<HTMLSpanElement>(null);
   const word3Ref = useRef<HTMLSpanElement>(null);
   const word4Ref = useRef<HTMLSpanElement>(null);
-  const mediaRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
   const videoRef = useVideoInView<HTMLVideoElement>();
   const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    // Play video slow and ensure it does not loop
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.5;
+    }
+  }, [videoRef]);
 
   useEffect(() => {
     if (reducedMotion || !sectionRef.current) return;
@@ -106,32 +112,6 @@ export function LegacySection() {
         });
       }
 
-      // Media reveal with clip-path
-      if (mediaRef.current) {
-        gsap.from(mediaRef.current, {
-          clipPath: "inset(100% 0% 0% 0%)",
-          duration: 1.6,
-          ease: "power4.inOut",
-          scrollTrigger: { trigger: mediaRef.current, start: "top 80%" },
-        });
-
-        // Parallax image within container
-        const video = mediaRef.current.querySelector("video");
-        if (video) {
-          gsap.to(video, {
-            y: -70,
-            scale: 1.05,
-            ease: "none",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: true,
-            },
-          });
-        }
-      }
-
       // Copy text reveal
       if (copyRef.current) {
         gsap.from(copyRef.current.children, {
@@ -154,30 +134,44 @@ export function LegacySection() {
       id="legacy"
       className="relative min-h-[100svh] overflow-hidden bg-[#0b0b0a] py-28 text-cream md:py-36"
     >
+      {/* Full-bleed Archive Video Background */}
+      <div className="absolute inset-0 z-0 h-full w-full opacity-35 mix-blend-luminosity">
+        <video
+          ref={videoRef}
+          className="h-full w-full object-cover object-center"
+          src={legacy.video}
+          poster={legacy.image}
+          muted
+          playsInline
+          preload="none"
+        />
+        <div className="cinematic-vignette absolute inset-0 pointer-events-none" />
+      </div>
+
       {/* Background ambient lighting and noise */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_40%,rgba(197,168,128,0.04),transparent_60%)]" />
-      <div className="grain absolute inset-0 opacity-20 pointer-events-none" />
+      <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_20%_40%,rgba(197,168,128,0.06),transparent_60%)]" />
+      <div className="grain absolute inset-0 z-0 opacity-30 pointer-events-none" />
 
       {/* Floating 78+ Year Legacy Stat in Depth */}
       <div
         ref={statRef}
-        className="pointer-events-none absolute top-12 -left-6 z-0 select-none font-display text-[clamp(9rem,26vw,24rem)] font-light leading-none text-cream/[0.03] md:-left-12 lg:-left-16"
+        className="pointer-events-none absolute top-12 -left-6 z-10 select-none font-display text-[clamp(9rem,26vw,24rem)] font-light leading-none text-cream/[0.15] md:-left-12 lg:-left-16"
         aria-hidden="true"
       >
         {legacy.stat}
       </div>
 
-      <div className="relative z-10 px-[var(--grid-margin)]">
+      <div className="relative z-20 px-[var(--grid-margin)]">
         <SectionMeta index="01" label="Legacy" location="Noida / India" className="mb-16 md:mb-24" />
 
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-12">
           {/* Left Column: Asymmetrical Display Typography */}
           <div className="lg:col-span-6 lg:pt-10">
-            <h2 className="font-display text-[clamp(2.75rem,7.5vw,5.75rem)] leading-[0.92] text-cream">
+            <h2 className="font-display text-[clamp(2.75rem,7.5vw,5.75rem)] leading-[0.92] text-cream drop-shadow-2xl">
               <span ref={word1Ref} className="block transform-gpu">
                 THE
               </span>
-              <span ref={word2Ref} className="block transform-gpu text-cream/70">
+              <span ref={word2Ref} className="block transform-gpu text-cream/80">
                 LEGACY
               </span>
               <span ref={word3Ref} className="block transform-gpu">
@@ -188,8 +182,8 @@ export function LegacySection() {
               </span>
             </h2>
 
-            <div className="mt-12 hidden lg:block max-w-xs border-l border-accent/40 pl-6">
-              <p className="font-sans text-[11px] tracking-[0.2em] text-cream/40 uppercase">
+            <div className="mt-12 hidden lg:block max-w-xs border-l border-accent/40 pl-6 drop-shadow-lg">
+              <p className="font-sans text-[11px] tracking-[0.2em] text-cream/60 uppercase">
                 {legacy.statLabel}
               </p>
               <p className="font-display text-2xl text-cream/90 mt-1">
@@ -198,30 +192,14 @@ export function LegacySection() {
             </div>
           </div>
 
-          {/* Right Column: Architectural Media & Narrative */}
-          <div className="lg:col-span-6 flex flex-col justify-between">
-            <div
-              ref={mediaRef}
-              className="relative mb-12 aspect-[4/5] w-full max-w-lg overflow-hidden border border-cream/10 bg-charcoal/50 shadow-2xl lg:ml-auto"
-            >
-              <video
-                ref={videoRef}
-                className="h-[120%] w-full object-cover object-center"
-                src={legacy.video}
-                poster={legacy.image}
-                muted
-                loop
-                playsInline
-                preload="none"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-4 left-4 text-meta text-cream/60">
-                ARCHIVE · MADHUSUDAN
-              </div>
+          {/* Right Column: Architectural Narrative */}
+          <div className="lg:col-span-6 flex flex-col justify-end lg:pb-12">
+            <div className="mb-12 text-meta text-accent drop-shadow-sm font-medium lg:ml-auto w-full max-w-md">
+              ARCHIVE · MADHUSUDAN
             </div>
 
-            <div ref={copyRef} className="max-w-md lg:ml-auto">
-              <p className="mb-8 font-sans text-base leading-relaxed text-cream/70 md:text-lg">
+            <div ref={copyRef} className="max-w-md lg:ml-auto drop-shadow-xl">
+              <p className="mb-8 font-sans text-base leading-relaxed text-cream/90 md:text-lg">
                 {legacy.copy}
               </p>
               <ArrowLink href={legacy.cta.href} label={legacy.cta.label} />

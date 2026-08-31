@@ -13,7 +13,7 @@ import { useVideoInView } from "@/hooks/useVideoInView";
 
 registerGsap();
 
-const PANELS = 6;
+const PANELS = 4;
 
 export function PhilosophySection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -62,19 +62,6 @@ export function PhilosophySection() {
         },
       );
 
-      // Architectural image sliding with parallax mask
-      gsap.to(track.querySelector("[data-philo-img]"), {
-        x: -140,
-        scale: 1.06,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () => `+=${getDist()}`,
-          scrub: true,
-        },
-      });
-
       // Rotating architectural metadata tag
       gsap.to(track.querySelector("[data-philo-meta]"), {
         x: 80,
@@ -105,8 +92,22 @@ export function PhilosophySection() {
       id="philosophy"
       className="section-pinned relative bg-[#0a0a09] text-cream"
     >
+      {/* Full-bleed Video Background */}
+      <div className="absolute inset-0 z-0 h-full w-full">
+        <video
+          ref={videoRef}
+          className="h-[100svh] w-full object-cover object-center sticky top-0"
+          src={philosophy.video}
+          poster={philosophy.image}
+          muted
+          loop
+          playsInline
+          preload="none"
+        />
+      </div>
+
       {/* Background grain */}
-      <div className="grain absolute inset-0 opacity-20 pointer-events-none" />
+      <div className="grain absolute inset-0 opacity-20 pointer-events-none z-0" />
 
       {/* Scoped Horizontal Progress Bar */}
       {isDesktop && !reducedMotion && (
@@ -116,89 +117,57 @@ export function PhilosophySection() {
       {/* Desktop Horizontal Track */}
       <div
         ref={trackRef}
-        className="hidden h-[100svh] min-h-[640px] w-max items-stretch md:flex"
+        className="relative z-10 hidden h-[100svh] min-h-[640px] w-max items-stretch md:flex"
       >
         {/* Panel 1: IGBC Badge & Title 1 */}
         <div className="flex h-full w-screen shrink-0 flex-col justify-center px-[var(--grid-margin)]">
           <SectionMeta index="04" label="Philosophy" location="IGBC Green" className="mb-8" />
-          <div data-philo-badge className="mb-4 inline-flex items-center gap-2">
+          <div data-philo-badge className="mb-4 inline-flex items-center gap-2 drop-shadow-md">
             <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
             <span className="font-sans text-xs tracking-[0.3em] text-accent uppercase font-medium">
               {philosophy.badge}
             </span>
           </div>
-          <h2 className="font-display text-[clamp(4.5rem,12vw,10.5rem)] leading-none text-cream">
+          <h2 className="font-display text-[clamp(4.5rem,12vw,10.5rem)] leading-none text-cream drop-shadow-2xl">
             {philosophy.title[0]}
           </h2>
         </div>
 
         {/* Panel 2: Title 2 Large Ghost Typography */}
         <div className="flex h-full w-[65vw] shrink-0 items-end px-[var(--grid-margin)] pb-28">
-          <h2 className="font-display text-[clamp(4.5rem,12vw,10.5rem)] leading-none text-cream/15">
+          <h2 className="font-display text-[clamp(4.5rem,12vw,10.5rem)] leading-none text-cream/40 drop-shadow-lg">
             {philosophy.title[1]}
           </h2>
         </div>
 
-        {/* Panel 3: Architectural Sustainability Visual Frame */}
-        <div className="flex h-full w-[70vw] shrink-0 items-center justify-end px-[var(--grid-margin)]">
-          <div
-            data-philo-img
-            className="aspect-[4/5] w-[min(42vw,480px)] overflow-hidden border border-cream/10 bg-charcoal shadow-2xl"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={philosophy.image}
-              alt="Architectural sustainability visual"
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-          </div>
-        </div>
-
-        {/* Panel 4: Narrative Philosophy */}
+        {/* Panel 3: Narrative Philosophy */}
         <div className="flex h-full w-[80vw] shrink-0 items-center px-[var(--grid-margin)]">
-          <div className="max-w-xl border-l border-accent/40 pl-8 md:ml-[6vw]">
-            <p className="font-sans text-base leading-relaxed text-cream/75 md:text-lg">
+          <div className="max-w-xl border-l border-accent/40 pl-8 md:ml-[6vw] bg-charcoal/20 backdrop-blur-sm py-6 drop-shadow-xl">
+            <p className="font-sans text-base leading-relaxed text-cream/90 md:text-lg">
               {philosophy.copy}
             </p>
           </div>
         </div>
 
-        {/* Panel 5: Metadata Tag & CTA */}
+        {/* Panel 4: Metadata Tag & CTA */}
         <div className="relative flex h-full w-[65vw] shrink-0 flex-col justify-center px-[var(--grid-margin)]">
           <span
             data-philo-meta
-            className="absolute top-28 right-[var(--grid-margin)] font-sans text-[10px] tracking-[0.4em] text-accent uppercase font-medium"
+            className="absolute top-28 right-[var(--grid-margin)] font-sans text-[10px] tracking-[0.4em] text-accent uppercase font-medium drop-shadow-md"
           >
             Long-term Environmental Impact
           </span>
-          <div className="max-w-md">
+          <div className="max-w-md bg-charcoal/20 backdrop-blur-sm p-8 rounded-xl border border-cream/10 drop-shadow-xl">
             <h3 className="font-display text-4xl text-cream mb-6">
               Sustainable Living Environments
             </h3>
             <ArrowLink href={philosophy.cta.href} label={philosophy.cta.label} />
           </div>
         </div>
-
-        {/* Panel 6: Cinematic IGBC Video Finale */}
-        <div className="flex h-full w-[75vw] shrink-0 items-center px-[var(--grid-margin)]">
-          <div className="aspect-[16/10] w-full max-w-3xl overflow-hidden border border-cream/10 bg-charcoal shadow-2xl">
-            <video
-              ref={videoRef}
-              className="h-full w-full object-cover"
-              src={philosophy.video}
-              poster={philosophy.image}
-              muted
-              loop
-              playsInline
-              preload="none"
-            />
-          </div>
-        </div>
       </div>
 
       {/* Mobile Vertical Layout */}
-      <div className="flex flex-col gap-12 px-[var(--grid-margin)] py-24 md:hidden">
+      <div className="relative z-10 flex flex-col gap-12 px-[var(--grid-margin)] py-24 md:hidden">
         <SectionMeta index="04" label="Philosophy" location="IGBC Green" />
         <div className="inline-flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-accent" />
@@ -206,25 +175,15 @@ export function PhilosophySection() {
             {philosophy.badge}
           </span>
         </div>
-        <h2 className="font-display text-5xl leading-tight text-cream">
+        <h2 className="font-display text-5xl leading-tight text-cream drop-shadow-lg">
           {philosophy.title.join(" ")}
         </h2>
-        <div className="aspect-[16/10] overflow-hidden border border-cream/10 bg-charcoal">
-          <video
-            className="h-full w-full object-cover"
-            src={philosophy.video}
-            poster={philosophy.image}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="none"
-          />
+        <div className="bg-charcoal/30 backdrop-blur-md p-6 rounded-xl border border-cream/10">
+          <p className="font-sans text-base leading-relaxed text-cream/90 mb-8">
+            {philosophy.copy}
+          </p>
+          <ArrowLink href={philosophy.cta.href} label={philosophy.cta.label} />
         </div>
-        <p className="font-sans text-base leading-relaxed text-cream/70">
-          {philosophy.copy}
-        </p>
-        <ArrowLink href={philosophy.cta.href} label={philosophy.cta.label} />
       </div>
     </section>
   );

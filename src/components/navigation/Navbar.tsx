@@ -81,9 +81,10 @@ export function Navbar({ ready = true }: NavbarProps) {
               alt="MUREC"
               width={110}
               height={28}
-              className={`w-auto transition-all duration-500 brightness-0 invert opacity-90 group-hover:opacity-100 ${
+              className={`transition-all duration-500 brightness-0 invert opacity-90 group-hover:opacity-100 ${
                 scrolled ? "h-5 md:h-6" : "h-6 md:h-7"
               }`}
+              style={{ width: "auto" }}
               priority
             />
           </Link>
