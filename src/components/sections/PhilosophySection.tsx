@@ -120,8 +120,11 @@ export function PhilosophySection() {
         className="relative z-10 hidden h-[100svh] min-h-[640px] w-max items-stretch md:flex"
       >
         {/* Panel 1: IGBC Badge & Title 1 */}
-        <div className="flex h-full w-screen shrink-0 flex-col justify-center px-[var(--grid-margin)]">
-          <SectionMeta index="04" label="Philosophy" location="IGBC Green" className="mb-8" />
+        <div className="relative flex h-full w-screen shrink-0 flex-col justify-center px-[var(--grid-margin)]">
+          {/* Section meta pinned to top so it never overlaps the heading */}
+          <div className="absolute top-10 left-[var(--grid-margin)]">
+            <SectionMeta index="04" label="Philosophy" location="IGBC Green" />
+          </div>
           <div data-philo-badge className="mb-4 inline-flex items-center gap-2 drop-shadow-md">
             <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
             <span className="font-sans text-xs tracking-[0.3em] text-accent uppercase font-medium">
@@ -134,15 +137,15 @@ export function PhilosophySection() {
         </div>
 
         {/* Panel 2: Title 2 Large Ghost Typography */}
-        <div className="flex h-full w-[65vw] shrink-0 items-end px-[var(--grid-margin)] pb-28">
+        <div className="flex h-full w-screen shrink-0 items-end px-[var(--grid-margin)] pb-28">
           <h2 className="font-display text-[clamp(4.5rem,12vw,10.5rem)] leading-none text-cream/40 drop-shadow-lg">
             {philosophy.title[1]}
           </h2>
         </div>
 
         {/* Panel 3: Narrative Philosophy */}
-        <div className="flex h-full w-[80vw] shrink-0 items-center px-[var(--grid-margin)]">
-          <div className="max-w-xl border-l border-accent/40 pl-8 md:ml-[6vw] bg-charcoal/20 backdrop-blur-sm py-6 drop-shadow-xl">
+        <div className="flex h-full w-screen shrink-0 items-center px-[var(--grid-margin)]">
+          <div className="max-w-xl border-l border-accent/40 pl-8 bg-charcoal/20 backdrop-blur-sm py-6 drop-shadow-xl">
             <p className="font-sans text-base leading-relaxed text-cream/90 md:text-lg">
               {philosophy.copy}
             </p>
@@ -150,7 +153,7 @@ export function PhilosophySection() {
         </div>
 
         {/* Panel 4: Metadata Tag & CTA */}
-        <div className="relative flex h-full w-[65vw] shrink-0 flex-col justify-center px-[var(--grid-margin)]">
+        <div className="relative flex h-full w-screen shrink-0 flex-col justify-center px-[var(--grid-margin)]">
           <span
             data-philo-meta
             className="absolute top-28 right-[var(--grid-margin)] font-sans text-[10px] tracking-[0.4em] text-accent uppercase font-medium drop-shadow-md"

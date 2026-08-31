@@ -12,7 +12,7 @@ export const navigation = {
 } as const;
 
 export const hero = {
-  video: "/images/homevideo.mp4",
+  video: "/images/home.mp4",
   poster: "/images/murec.webp",
   logo: "/images/murec.png",
   tagline: "Madhusudan Urban Real Estate Collection",

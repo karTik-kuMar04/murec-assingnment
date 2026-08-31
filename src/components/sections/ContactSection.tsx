@@ -5,6 +5,7 @@ import { gsap, registerGsap } from "@/lib/gsap";
 import { ArrowRight } from "lucide-react";
 import { contact } from "@/data/murec";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useVideoInView } from "@/hooks/useVideoInView";
 
 registerGsap();
 
@@ -13,6 +14,7 @@ export function ContactSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
+  const videoRef = useVideoInView<HTMLVideoElement>();
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -76,17 +78,36 @@ export function ContactSection() {
     return () => ctx.revert();
   }, [reducedMotion]);
 
+  useEffect(() => {
+    // Play video slow
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.5;
+    }
+  }, [videoRef]);
+
   return (
     <section
       ref={sectionRef}
       id="contact"
       className="relative min-h-[90svh] overflow-hidden bg-[#080808] px-[var(--grid-margin)] py-36 text-cream md:py-48"
     >
-      {/* Background ambient lighting and noise */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(197,168,128,0.06),transparent_70%)]" />
-      <div className="grain absolute inset-0 opacity-20 pointer-events-none" />
+      {/* Full-bleed Video Background */}
+      <div className="absolute inset-0 z-0 h-full w-full">
+        <video
+          ref={videoRef}
+          className="h-full w-full object-cover object-center"
+          src="/images/v3.mp4"
+          muted
+          playsInline
+          preload="none"
+        />
+      </div>
 
-      <div className="mx-auto flex min-h-[60vh] max-w-[1600px] flex-col justify-between">
+      {/* Background ambient lighting and noise */}
+      <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,rgba(197,168,128,0.1),transparent_70%)]" />
+      <div className="grain absolute inset-0 opacity-30 pointer-events-none z-0" />
+
+      <div className="relative z-10 mx-auto flex min-h-[60vh] max-w-[1600px] flex-col justify-between">
         {/* Massive Typographic Climax */}
         <h2
           ref={titleRef}

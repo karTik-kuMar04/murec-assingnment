@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { gsap, registerGsap } from "@/lib/gsap";
 import { hero } from "@/data/murec";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { AudioControl } from "@/components/ui/AudioControl";
+
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 registerGsap();
@@ -30,7 +30,7 @@ export function Hero({ ready }: HeroProps) {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const taglineRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
-  const audioControlRef = useRef<HTMLDivElement>(null);
+
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export function Hero({ ready }: HeroProps) {
       gsap.set(titleRef.current!.querySelectorAll("[data-letter]"), { opacity: 0, x: (i) => (i - 2) * 60 });
       gsap.set(taglineRef.current!.querySelectorAll("[data-line]"), { opacity: 0, x: -36 });
       gsap.set(bottomRef.current, { opacity: 0, y: 24 });
-      if (audioControlRef.current) gsap.set(audioControlRef.current, { opacity: 0, scale: 0.9 });
+
 
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
@@ -68,8 +68,7 @@ export function Hero({ ready }: HeroProps) {
           { x: 0, opacity: 1, duration: 1.0, stagger: 0.06 },
           0.6,
         )
-        .to(bottomRef.current, { y: 0, opacity: 1, duration: 0.9 }, 0.9)
-        .to(audioControlRef.current, { opacity: 1, scale: 1, duration: 0.6 }, 1.1);
+        .to(bottomRef.current, { y: 0, opacity: 1, duration: 0.9 }, 0.9);
 
       // Scroll-driven camera parallax
       gsap.to(mediaRef.current, {
@@ -137,12 +136,7 @@ export function Hero({ ready }: HeroProps) {
       </div>
 
       {/* Floating Audio Control (Top Right below navbar) */}
-      <div
-        ref={audioControlRef}
-        className="absolute top-24 right-[var(--grid-margin)] z-30 md:top-28"
-      >
-        <AudioControl videoRef={videoRef} />
-      </div>
+
 
       {/* Hero Content Overlay */}
       <div className="relative z-10 flex h-full flex-col justify-between px-[var(--grid-margin)] pb-10 pt-28 md:pb-12 md:pt-36">

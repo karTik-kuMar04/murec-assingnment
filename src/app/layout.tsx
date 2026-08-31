@@ -13,6 +13,15 @@ export const metadata: Metadata = {
   title: "MUREC — Madhusudan Urban Real Estate Collection",
   description:
     "For over seven decades, MUREC has stood for perseverance, integrity, and nation-building through enterprise. Quality before profit, trust before everything.",
+  icons: {
+    icon: [
+      { url: "/images/murec.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/images/murec.png", type: "image/png" },
+    ],
+    shortcut: "/images/murec.png",
+  },
   openGraph: {
     title: "MUREC — Madhusudan Urban Real Estate Collection",
     description:
